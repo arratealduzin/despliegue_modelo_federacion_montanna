@@ -13,6 +13,9 @@ from sklearn.impute import SimpleImputer
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import roc_auc_score
 from sklearn.model_selection import GroupShuffleSplit
+from pipeline_completo import DropLeakageColumns, FixCategoriaEncoding, CreateGrupoPersona
+
+
 
 os.chdir(os.path.dirname(os.path.abspath(__file__))) 
 #garantiza que el script siempre encuentre el pipeline_completo.pkl independientemente desde dónde se ejecute.
@@ -20,7 +23,7 @@ os.chdir(os.path.dirname(os.path.abspath(__file__)))
 app = Flask(__name__)
 
 # Carga el modelo
-from pipeline_completo import DropLeakageColumns, FixCategoriaEncoding, CreateGrupoPersona
+
 model = joblib.load("pipeline_completo.pkl")
 
 # Texto de bienvenida
