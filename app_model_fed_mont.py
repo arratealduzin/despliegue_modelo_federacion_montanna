@@ -110,7 +110,7 @@ def predict():
 @app.route("/api/v1/retrain", methods=["GET"])
 def retrain():
     global model
-    if not os.path.exists("dataset_definitivo.csv"):
+    if not os.path.exists("./data/dataset_definitivo.csv"):
         return jsonify({"error": "dataset_definitivo.csv no encontrado. Nada se ha hecho."}), 404
     data = pd.read_csv('dataset_definitivo.csv')
     data.columns = [col.lower() for col in data.columns]
