@@ -14,50 +14,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import roc_auc_score
 from sklearn.model_selection import GroupShuffleSplit
 
-class DropLeakageColumns(BaseEstimator, TransformerMixin):
-    """Elimina columnas con data leakage y columnas innecesarias."""
-    DROP_COLS = [
-        "Actividad", "Lugar", "Provincia", "TipoAccidente",
-        "DescripcionGrado", "TamañoGrupo", "NResponsables",
-        "Entrenamiento", "ActividadPersonal", "ActividadOrganizada",
-        "Festivo", "año_accidente", "hospitalizacion", "helicoptero",
-        "discapacidad", "numeroaccidentesaño",
-        "nsocio", "numeroclub",
-    ]
-    def fit(self, X, y=None):
-        self.cols_to_drop_ = [c for c in self.DROP_COLS if c in X.columns]
-        return self
-    def transform(self, X):
-        return X.drop(columns=self.cols_to_drop_, errors="ignore")
-
-class FixCategoriaEncoding(BaseEstimator, TransformerMixin):
-    """Corrige el encoding latin1/utf-8 de la columna 'categoria'."""
-    def fit(self, X, y=None):
-        return self
-    def transform(self, X):
-        X = X.copy()
-        if "categoria" in X.columns:
-            X["categoria"] = (
-                X["categoria"]
-                .str.encode("latin1")
-                .str.decode("utf-8")
-            )
-        return X
-
-class CreateGrupoPersona(BaseEstimator, TransformerMixin):
-    MAPEO_MODALIDAD = {
-        "A": "Senderismo", "A6": "Senderismo España",
-        "OT": "actividades otoño", "OTPromo": "actividades otoño",
-        "AU": "Montaña C.A.Madrid",
-        "B": "Montaña", "B6": "Montaña", "B7": "Montaña",
-        "B Comp.": "Montaña competición",
-        "C": "Montaña Europa y Marruecos",
-        "ROC": "Rocodromo",
-        "D": "Montaña < 7000m mundo",
-        "D Comp.": "Montaña < 7000m mundo competición",
-        "E": "Montaña > 7000m",
-        "E Comp.": "Montaña > 7000m competición",
-    }
+from clases import DropLeakageColumns, FixCategoriaEncoding, CreateGrupoPersona
 
 os.chdir(os.path.dirname(os.path.abspath(__file__))) 
 #garantiza que el script siempre encuentre el pipeline_completo.pkl independientemente desde dónde se ejecute.
